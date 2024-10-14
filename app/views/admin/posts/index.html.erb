@@ -1,0 +1,33 @@
+<h1 class="text-2xl font-bold mb-6"><%= action_name.capitalize %> Posts</h1>
+
+<%= form_with url: admin_posts_path, method: :get, local: true, class: 'mb-4' do %>
+  <input type="text" name="search" placeholder="Search by title..." class="border rounded px-4 py-2" data-controller="search" data-action="input->search#filter">
+<% end %>
+
+<table class="min-w-full bg-white" data-controller="table">
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="py-2">ID</th>
+      <th class="py-2">Title</th>
+      <th class="py-2">Slug</th>
+      <th class="py-2">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @posts.each do |post| %>
+      <tr data-post-title="<%= post.title.downcase %>">
+        <td class="border px-4 py-2"><%= post.id %></td>
+        <td class="border px-4 py-2"><%= post.title %></td>
+        <td class="border px-4 py-2"><%= post.slug %></td>
+        <td class="border px-4 py-2">
+          <%= link_to 'Edit', edit_admin_post_path(post), class: 'text-blue-500' %> |
+          <%= link_to 'Delete', admin_post_path(post), method: :delete, data: { confirm: 'Are you sure?' }, class: 'text-red-500' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="mt-4">
+  <%= paginate @posts %>
+</div>
