@@ -1,6 +1,17 @@
 Rails.application.routes.draw do
   devise_for :users, skip: [ :registrations ]
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+
+  namespace :admin do
+    get 'dashboard/home'
+    root to: 'dashboard#home'
+    resources :posts
+    get 'pending', to: 'post#pending'
+    resources :categories
+    resources :tags
+    get 'settings', to: 'user#settings'
+  end
+
+  resources :posts, only: [:index, :show]
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
